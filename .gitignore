@@ -4,3 +4,7 @@ dev-dist
 .DS_Store
 *.local
 .claude/
+
+# planning docs and design mockups: local only, not part of the app
+PLAN.md
+design/

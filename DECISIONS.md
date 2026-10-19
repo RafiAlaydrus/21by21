@@ -1,5 +1,7 @@
 # DECISIONS.md
 
+> `PLAN.md` and the `design/` mockups referenced below are kept locally and are not tracked in the repository.
+
 Choices made where PLAN.md was silent or ambiguous, the bundle sizes, the acceptance checklist (§14) with how each
 line was verified, and what could not be verified here.
 
