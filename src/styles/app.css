@@ -155,3 +155,6 @@ button.rowline { width: 100%; text-align: left; }
 .wake-btn { width: 240px; height: 240px; border-radius: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 0; background: rgba(191, 90, 242, 0.22); }
 .leaflet-container { background: #111; border-radius: 18px; font-family: var(--font); }
 .load-screen { position: fixed; inset: 0; background: #000; }
+
+.leaflet-tile-pane { filter: invert(0.92) hue-rotate(180deg) saturate(0.7); }
+.leaflet-control-attribution { font-size: 10px; }

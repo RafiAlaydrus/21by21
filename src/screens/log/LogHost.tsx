@@ -13,6 +13,8 @@ const REG: Partial<Record<LogKind, Lazy>> = {
   sleep: lazy(() => import('../sleep/SleepLogger')),
   drink: lazy(() => import('./DrinkLogger')),
   supplement: lazy(() => import('./SupplementLogger')),
+  startSession: lazy(() => import('../train/StartSession')),
+  cardio: lazy(() => import('../train/CardioLogger')),
 };
 
 interface Tile { id: string; label: string; icon: string; color: string; show: boolean; go: (() => void) | { kind: LogKind; props?: LogProps } }

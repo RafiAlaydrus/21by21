@@ -22,3 +22,10 @@ export async function logSupplement(s: Supplement, o: AtOpts & { amount?: number
   await db.supplementLogs.put(rec);
   return rec;
 }
+
+import type { Workout } from './types';
+/** persist a workout, keeping the multi-entry `exerciseIds` index in sync */
+export async function saveWorkout(w: Workout): Promise<void> {
+  const exerciseIds = [...new Set([...w.sets.map((s) => s.exerciseId), ...w.cardio.map((c) => c.exerciseId)])];
+  await db.workouts.put({ ...w, exerciseIds, updatedAt: Date.now() });
+}
