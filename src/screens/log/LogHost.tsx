@@ -1,6 +1,6 @@
-import { Suspense, lazy, useCallback, useMemo, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from 'react';
 import type { ComponentType, LazyExoticComponent, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { LoggerCtx } from '../../hooks/useLogger';
 import type { LogKind, LogProps, LoggerApi, LoggerProps } from '../../hooks/useLogger';
 import { Sheet } from '../../components/Sheet';
@@ -32,11 +32,15 @@ interface Tile { id: string; label: string; icon: string; color: string; show: b
 
 export function LogHost({ children }: { children: ReactNode }) {
   const nav = useNavigate();
+  const { pathname } = useLocation();
   const { settings, workouts } = useData();
   const [quickOpen, setQuickOpen] = useState(false);
   const [dayKey, setDayKey] = useState<string | undefined>();
   const [active, setActive] = useState<{ kind: LogKind; props: LogProps } | null>(null);
   const [open, setOpen] = useState(false);
+
+  // a route change (back-swipe, link, deep link) must never leave a logger sheet or camera open on top of the new screen
+  useEffect(() => { setQuickOpen(false); setOpen(false); setActive(null); }, [pathname]);
 
   const close = useCallback(() => { setOpen(false); setQuickOpen(false); window.setTimeout(() => setActive(null), 320); }, []);
   const openKind = useCallback((kind: LogKind, props: LogProps = {}) => {
