@@ -11,6 +11,8 @@ import { C, rgba } from '../../theme';
 type Lazy = LazyExoticComponent<ComponentType<LoggerProps>>;
 const REG: Partial<Record<LogKind, Lazy>> = {
   sleep: lazy(() => import('../sleep/SleepLogger')),
+  drink: lazy(() => import('./DrinkLogger')),
+  supplement: lazy(() => import('./SupplementLogger')),
 };
 
 interface Tile { id: string; label: string; icon: string; color: string; show: boolean; go: (() => void) | { kind: LogKind; props?: LogProps } }
