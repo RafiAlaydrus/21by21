@@ -85,3 +85,13 @@ export function sleepDayKey(kind: 'night' | 'nap', startMs: number, tz: number, 
 }
 
 export const durationMin = (start: number, end: number) => Math.max(0, Math.round((end - start) / 60000));
+
+/** value for <input type="datetime-local"> in offset `tz` */
+export function toLocalInput(ms: number, tz: number): string {
+  const p = parts(ms, tz);
+  return `${p.y}-${pad(p.mo)}-${pad(p.d)}T${pad(p.h)}:${pad(p.mi)}`;
+}
+export function fromLocalInput(v: string, tz: number): number {
+  const [d, t] = v.split('T');
+  return epochFor(d, t, tz);
+}

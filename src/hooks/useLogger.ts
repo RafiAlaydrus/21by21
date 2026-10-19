@@ -5,6 +5,7 @@ export type LogKind =
   | 'photo' | 'soreness' | 'steps' | 'tag' | 'note' | 'reminder' | 'custom' | 'startSession';
 
 export interface LogProps { id?: string; dayKey?: string; trackerId?: string; label?: string }
+export interface LoggerProps extends LogProps { open: boolean; onClose: () => void }
 export interface LoggerApi {
   quick: (dayKey?: string) => void;
   open: (kind: LogKind, props?: LogProps) => void;

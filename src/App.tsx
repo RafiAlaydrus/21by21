@@ -5,8 +5,10 @@ import { ToastProvider } from './components/Toast';
 import { TabBar } from './components/TabBar';
 import { AppRoutes } from './routes';
 import { DataProvider, useData } from './hooks/useData';
+import { LogHost } from './screens/log/LogHost';
 
 const Onboarding = lazy(() => import('./screens/onboarding/Onboarding'));
+const WakeUp = lazy(() => import('./screens/sleep/WakeUp'));
 
 function Shell() {
   const ref = useRef<HTMLElement>(null);
@@ -23,9 +25,11 @@ function Shell() {
 }
 
 function Gate() {
-  const { onboarded } = useData();
+  const { onboarded, activeSleep } = useData();
+  // while a sleep is active the whole app is just the Wake Up screen, whatever the route
+  if (activeSleep) return <Suspense fallback={null}><WakeUp /></Suspense>;
   if (!onboarded) return <main className="app-main"><Suspense fallback={null}><Onboarding /></Suspense></main>;
-  return <Shell />;
+  return <LogHost><Shell /></LogHost>;
 }
 
 export function App() {

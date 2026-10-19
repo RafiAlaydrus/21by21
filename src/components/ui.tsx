@@ -3,6 +3,7 @@ import type { CSSProperties, HTMLAttributes, ReactNode, ButtonHTMLAttributes } f
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Icon } from './Icon';
 import { rgba } from '../theme';
+import { fromLocalInput, toLocalInput } from '../logic/dates';
 
 /* ---------- containers ---------- */
 type CardProps = HTMLAttributes<HTMLElement> & { lg?: boolean; tile?: boolean; flat?: boolean; as?: 'section' | 'div' };
@@ -210,6 +211,17 @@ export function DateField({ label, value, onChange, className = '' }: { label: s
     <label className={`glass-btn field ${className}`}>
       <span className="lbl">{label}</span>
       <input type="date" value={value} onChange={(e) => e.target.value && onChange(e.target.value)} className="num" />
+    </label>
+  );
+}
+
+/** date + time in one native picker, stored as epoch ms in offset `tz` */
+export function DateTimeField({ label, value, tz, onChange }: { label: string; value: number; tz: number; onChange: (ms: number) => void }) {
+  return (
+    <label className="glass-btn field">
+      <span className="lbl">{label}</span>
+      <input type="datetime-local" value={toLocalInput(value, tz)} className="num"
+        onChange={(e) => e.target.value && onChange(fromLocalInput(e.target.value, tz))} />
     </label>
   );
 }

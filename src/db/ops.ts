@@ -9,10 +9,10 @@ export const tzNow = (): number => new Date().getTimezoneOffset();
 export const todayKey = (): string => dayKey(Date.now());
 
 /** Build a new record with id + timestamps. dayKey (if any) is whatever the caller froze at log time. */
-export function newRec<T extends object>(fields: T): T & Rec {
+export function newRec<T extends object>(fields: T, skipLate = false): T & Rec {
   const now = Date.now();
   const rec = { ...fields, id: uid(), createdAt: now, updatedAt: now } as T & Rec;
-  return markLate(rec);
+  return skipLate ? rec : markLate(rec);
 }
 
 /** Records created/edited after their day ended get a tiny "edited later" marker. */
@@ -23,7 +23,9 @@ function markLate<T extends Rec>(rec: T): T {
 }
 
 export async function saveRec<T extends Rec>(table: Table<T, string>, rec: T): Promise<T> {
-  const next = markLate({ ...rec, updatedAt: Date.now() });
+  // a night sleep is attributed to the previous day by design, so it is never "late"
+  const next = { ...rec, updatedAt: Date.now() };
+  if (table.name !== 'sleeps') markLate(next);
   await table.put(next);
   return next;
 }
