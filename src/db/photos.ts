@@ -17,6 +17,18 @@ async function decode(file: Blob): Promise<ImageBitmap | HTMLImageElement> {
   }
 }
 
+/**
+ * Canvas → JPEG Blob via the synchronous toDataURL path. canvas.toBlob waits for a rendered frame, so it can stall
+ * for a second per call when the page is throttled or backgrounded; this never does.
+ */
+export function canvasToJpeg(canvas: HTMLCanvasElement, quality: number): Blob {
+  const url = canvas.toDataURL('image/jpeg', quality);
+  const bin = atob(url.slice(url.indexOf(',') + 1));
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new Blob([bytes], { type: 'image/jpeg' });
+}
+
 /** Resize to `maxEdge` on the long side and re-encode as JPEG. Originals are never stored. */
 export async function compressImage(file: Blob, maxEdge: number, quality: number): Promise<Blob> {
   const src = await decode(file);
@@ -28,7 +40,7 @@ export async function compressImage(file: Blob, maxEdge: number, quality: number
   canvas.height = Math.max(1, Math.round(sh * k));
   canvas.getContext('2d')!.drawImage(src, 0, 0, canvas.width, canvas.height);
   if ('close' in src) src.close();
-  return new Promise((res, rej) => canvas.toBlob((b) => (b ? res(b) : rej(new Error('encode failed'))), 'image/jpeg', quality));
+  return canvasToJpeg(canvas, quality);
 }
 
 /** full: 1280px q0.75 · thumb: 320px q0.7 (PLAN §3.2). takenAt = file time if within 12 h, else now. */

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Sheet } from '../../components/Sheet';
-import { Btn, Cap, Chip, DateTimeField, NumField, Segmented, Switch, TextField, TimePill } from '../../components/ui';
+import { Btn, Cap, Chip, DateTimeField, NumField, Segmented, Switch, TextField, TimePill, ToggleRow } from '../../components/ui';
 import { useToast } from '../../components/Toast';
 import { useData } from '../../hooks/useData';
 import { db } from '../../db/schema';
@@ -166,8 +166,9 @@ export function ReminderLogger({ open, onClose, id }: LoggerProps) {
   const tz = ex?.tzOffsetMin ?? tzNow();
   const [text, setText] = useState(ex?.text ?? '');
   const [at, setAt] = useState(ex?.at ?? Math.ceil((Date.now() + 3600000) / 900000) * 900000);
+  const [done, setDone] = useState(ex?.done ?? false);
   const save = async () => {
-    const fields = { text: text.trim(), at, tzOffsetMin: tz, done: ex?.done ?? false };
+    const fields = { text: text.trim(), at, tzOffsetMin: tz, done };
     if (ex) await saveRec(db.reminders, { ...ex, ...fields }); else await db.reminders.put(newRec(fields) as Reminder);
     onClose(); toast('Reminder saved');
   };
@@ -175,6 +176,7 @@ export function ReminderLogger({ open, onClose, id }: LoggerProps) {
     <Sheet open={open} onClose={onClose} title="Reminder" action={{ label: 'Save', disabled: !text.trim(), onClick: () => void save() }}>
       <TextField label="Reminder" value={text} onChange={setText} autoFocus />
       <DateTimeField label="When" value={at} tz={tz} onChange={setAt} />
+      {ex && <ToggleRow label="Done" checked={done} onChange={setDone} />}
       <div className="t-12 muted">Shown under “Coming up” and in the timeline. There are no push notifications.</div>
       {ex && <Btn className="danger" onClick={async () => { await db.reminders.delete(ex.id); onClose(); toast('Reminder deleted', { undo: () => void db.reminders.put(ex) }); }}>Delete</Btn>}
     </Sheet>

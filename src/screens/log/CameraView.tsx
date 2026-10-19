@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from '../../components/Icon';
 import { PhotoPicker } from '../../components/PhotoPicker';
+import { canvasToJpeg } from '../../db/photos';
 
 /**
  * getUserMedia camera with the previous photo of the same pose as a 35 % ghost overlay for alignment.
@@ -38,7 +39,7 @@ export default function CameraView({ ghostUrl, onCapture, onClose }: { ghostUrl?
     const c = document.createElement('canvas');
     c.width = Math.round(sw); c.height = Math.round(sh);
     c.getContext('2d')!.drawImage(v, (v.videoWidth - sw) / 2, (v.videoHeight - sh) / 2, sw, sh, 0, 0, c.width, c.height);
-    c.toBlob((b) => b && onCapture(b), 'image/jpeg', 0.92);
+    onCapture(canvasToJpeg(c, 0.92));
   };
 
   return createPortal(

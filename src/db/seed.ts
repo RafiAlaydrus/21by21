@@ -5,7 +5,7 @@
 import { db } from './schema';
 import { defaultSettings } from './defaults';
 import { newRec, setMeta, todayKey, tzNow, uid } from './ops';
-import { compressImage } from './photos';
+import { canvasToJpeg, compressImage } from './photos';
 import { loadRefFoods } from './refdb';
 import { addDays, dayKey as dayKeyOf, epochFor, sleepDayKey, weekdayMon0 } from '../logic/dates';
 import type * as T from './types';
@@ -26,7 +26,7 @@ async function fakePhoto(kind: T.BlobRec['kind'], hue: number, label: string, po
   if (portrait) { x.beginPath(); x.arc(240, 160, 60, 0, 7); x.fill(); x.fillRect(170, 230, 140, 260); }
   else { x.beginPath(); x.arc(320, 240, 150, 0, 7); x.fill(); x.fillStyle = `hsl(${hue},70%,55%)`; x.beginPath(); x.arc(290, 220, 50, 0, 7); x.arc(360, 260, 40, 0, 7); x.fill(); }
   x.fillStyle = 'rgba(255,255,255,0.9)'; x.font = '600 28px system-ui'; x.fillText(label, 18, c.height - 22);
-  const blob: Blob = await new Promise((r) => c.toBlob((b) => r(b!), 'image/jpeg', 0.85));
+  const blob = canvasToJpeg(c, 0.85);
   const [full, thumb] = await Promise.all([compressImage(blob, 1280, 0.75), compressImage(blob, 320, 0.7)]);
   const rec = newRec({ kind, full, thumb, takenAt: Date.now() }, true) as T.BlobRec;
   await db.blobs.put(rec);

@@ -26,6 +26,7 @@ function Shell() {
 
 function Gate() {
   const { onboarded, activeSleep } = useData();
+  useEffect(() => { try { void navigator.storage?.persist?.(); } catch { /* not supported */ } }, []);
   // while a sleep is active the whole app is just the Wake Up screen, whatever the route
   if (activeSleep) return <Suspense fallback={null}><WakeUp /></Suspense>;
   if (!onboarded) return <main className="app-main"><Suspense fallback={null}><Onboarding /></Suspense></main>;

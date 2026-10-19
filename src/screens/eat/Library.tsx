@@ -107,6 +107,7 @@ function Recipes() {
 
 function Drinks() {
   const { drinkTypes } = useData();
+  const toast = useToast();
   const [edit, setEdit] = useState<DrinkType | 'new' | null>(null);
   const [name, setName] = useState('');
   const [n, setN] = useState<{ kcal?: number; protein?: number; carbs?: number; fat?: number }>({});
@@ -138,7 +139,7 @@ function Drinks() {
           <NumField label="Carbs g" value={n.carbs} onChange={(v) => setN({ ...n, carbs: v })} />
           <NumField label="Fat g" value={n.fat} onChange={(v) => setN({ ...n, fat: v })} />
         </div>
-        {edit && edit !== 'new' && <Btn className="danger" onClick={async () => { await db.drinkTypes.delete(edit.id); setEdit(null); }}>Delete drink type</Btn>}
+        {edit && edit !== 'new' && <Btn className="danger" onClick={async () => { const t = edit; await db.drinkTypes.delete(t.id); setEdit(null); toast('Drink type deleted', { undo: () => void db.drinkTypes.put(t) }); }}>Delete drink type</Btn>}
       </Sheet>
     </>
   );
@@ -146,6 +147,7 @@ function Drinks() {
 
 function Supps() {
   const { supplements } = useData();
+  const toast = useToast();
   const [edit, setEdit] = useState<Supplement | 'new' | null>(null);
   return (
     <>
@@ -160,7 +162,7 @@ function Supps() {
       </Card>
       <Sheet open={!!edit} onClose={() => setEdit(null)} title={edit === 'new' ? 'New supplement' : 'Supplement'} tall>
         {edit && <SupplementForm key={edit === 'new' ? 'n' : edit.id} initial={edit === 'new' ? undefined : edit} onSaved={() => setEdit(null)}
-          onDelete={edit === 'new' ? undefined : async () => { await db.supplements.delete(edit.id); setEdit(null); }} />}
+          onDelete={edit === 'new' ? undefined : async () => { const sp = edit; await db.supplements.delete(sp.id); setEdit(null); toast('Supplement deleted', { undo: () => void db.supplements.put(sp) }); }} />}
       </Sheet>
     </>
   );

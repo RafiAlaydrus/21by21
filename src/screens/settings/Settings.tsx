@@ -8,7 +8,7 @@ import { TargetRow } from '../../components/TargetRow';
 import { useToast } from '../../components/Toast';
 import { useData } from '../../hooks/useData';
 import { todayKey, uid, updateSettings } from '../../db/ops';
-import { doBackup, importBackup, inspectBackup } from '../../db/backup';
+import { exportBackup, importBackup, inspectBackup, markBackedUp, saveFile } from '../../db/backup';
 import type { BackupInfo } from '../../db/backup';
 import { fmtDayWd, fmtInt } from '../../logic/format';
 import type { CustomTracker, Settings as S, Target } from '../../db/types';
@@ -55,7 +55,7 @@ function DateList({ items, onChange }: { items: string[]; onChange: (l: string[]
   const [v, setV] = useState(() => todayKey());
   return (
     <div className="stack g8">
-      <div className="row wrap g8">{[...items].sort().map((d) => <Chip key={d} sm on onClick={() => onChange(items.filter((x) => x !== d))}>{fmtDayWd(d)} ✕</Chip>)}{items.length === 0 && <span className="muted t-13">None</span>}</div>
+      <div className="row wrap g8">{[...items].sort().map((d) => <Chip key={d} sm on onClick={() => onChange(items.filter((x) => x !== d))}><span className="row g6">{fmtDayWd(d)}<Icon name="x" size={14} sw={2.4} /></span></Chip>)}{items.length === 0 && <span className="muted t-13">None</span>}</div>
       <div className="row g8"><DateField className="grow" label="Add date" value={v} onChange={setV} /><Btn disabled={!v || items.includes(v)} onClick={() => onChange([...items, v])} style={{ borderRadius: 16, minHeight: 56 }}>Add</Btn></div>
     </div>
   );
@@ -112,6 +112,7 @@ export default function Settings() {
   /* ---- backup ---- */
   const [busy, setBusy] = useState(false);
   const [pending, setPending] = useState<{ file: File; info: BackupInfo } | null>(null);
+  const [ready, setReady] = useState<{ blob: Blob; name: string } | null>(null);
   const [importMsg, setImportMsg] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
   const onFile = async (f?: File) => {
@@ -198,7 +199,7 @@ export default function Settings() {
       </>)}
 
       {sec('quickwater', 'Quick-add water buttons', <>
-        <div className="t-13 muted">Your own glass and bottle sizes. This list starts empty.</div>
+        <div className="t-13 muted">Your own glass and bottle sizes. This list starts empty; a button appears on the Water screen once it has an amount.</div>
         {s.quickWater.map((q, i) => (
           <div key={q.id} className="row g8">
             <CommitText label="Label" className="grow" value={q.label} onCommit={(v) => void up((x) => { x.quickWater[i].label = v; })} />
@@ -206,7 +207,7 @@ export default function Settings() {
             <Move i={i} n={s.quickWater.length} move={(a, b) => void up((x) => { x.quickWater = reorder(x.quickWater, a, b); })} del={() => { void up((x) => { x.quickWater.splice(i, 1); }); toast(`${q.label} removed`, { undo: () => void up((x) => { x.quickWater.splice(i, 0, q); }) }); }} />
           </div>
         ))}
-        <Btn onClick={() => void up((x) => { x.quickWater.push({ id: uid(), label: 'Glass', ml: 250 }); })}>+ Add button</Btn>
+        <Btn onClick={() => void up((x) => { x.quickWater.push({ id: uid(), label: 'New button', ml: 0 }); })}>+ Add button</Btn>
       </>)}
 
       {sec('meal', 'Meal labels', <StringList items={s.mealLabels} placeholder="e.g. Breakfast" onChange={(l) => void up((x) => { x.mealLabels = l; })} />, 'Order = time of day')}
@@ -234,7 +235,7 @@ export default function Settings() {
 
       {sec('backup', 'Backup', <>
         <div className="num t-13 muted">{s.lastBackupAt ? `Last backup ${new Date(s.lastBackupAt).toLocaleString()}` : 'No backup yet'}</div>
-        <Btn tint={C.green} tintA={0.4} disabled={busy} onClick={async () => { setBusy(true); try { const r = await doBackup(); toast(r === 'shared' ? 'Backup ready' : 'Backup downloaded'); } catch { toast('Backup failed'); } finally { setBusy(false); } }}>{busy ? 'Preparing…' : 'Export backup (zip)'}</Btn>
+        <Btn tint={C.green} tintA={0.4} disabled={busy} onClick={async () => { setBusy(true); try { setReady(await exportBackup()); } catch { toast('Backup failed'); } finally { setBusy(false); } }}>{busy ? 'Preparing…' : 'Export backup (zip)'}</Btn>
         <input ref={fileRef} type="file" accept=".zip,application/zip" hidden onChange={(e) => { void onFile(e.target.files?.[0]); e.target.value = ''; }} />
         <Btn onClick={() => fileRef.current?.click()}>Import backup…</Btn>
         {importMsg && <div className="t-13" style={{ color: C.red }}>{importMsg}</div>}
@@ -261,6 +262,14 @@ export default function Settings() {
         )}
       </>)}
 
+      <Sheet open={!!ready} onClose={() => setReady(null)} title="Backup ready" closeLabel="Close">
+        {ready && <>
+          <div className="t-15 b600">{ready.name}</div>
+          <div className="num t-13 muted">{(ready.blob.size / 1048576).toFixed(1)} MB · all entries and photos</div>
+          <Btn block tint={C.green} tintA={0.45} onClick={async () => { const r = await saveFile(ready.blob, ready.name, 'application/zip'); await markBackedUp(); toast(r === 'shared' ? 'Backup shared' : 'Backup downloaded'); setReady(null); }}>Save to Files / Share</Btn>
+          <div className="t-12 muted">On iPhone choose “Save to Files”. The backup is marked done once you save or share it.</div>
+        </>}
+      </Sheet>
       <Sheet open={!!pending} onClose={() => setPending(null)} title="Import backup">
         {pending && <>
           <div className="t-15 b600">This replaces all data on this phone.</div>

@@ -63,7 +63,7 @@ function GymSheet({ gym, onClose }: { gym: Gym | 'new' | null; onClose: () => vo
       <TextField label="Name" value={name} onChange={setName} />
       <TextField label="Note" value={note} onChange={setNote} />
       <Cap>Equipment</Cap>
-      <div className="row wrap g8">{equip.map((e) => <Chip key={e} sm on onClick={() => setEquip(equip.filter((x) => x !== e))}>{e} ✕</Chip>)}</div>
+      <div className="row wrap g8">{equip.map((e) => <Chip key={e} sm on onClick={() => setEquip(equip.filter((x) => x !== e))}><span className="row g6">{e}<Icon name="x" size={14} sw={2.4} /></span></Chip>)}</div>
       <div className="row g8"><TextField className="grow" label="Add equipment" value={item} onChange={setItem} onKeyDown={(e) => e.key === 'Enter' && addItem()} /><Btn onClick={addItem} disabled={!item.trim()} style={{ borderRadius: 16, minHeight: 56 }}>Add</Btn></div>
       <Cap>Location</Cap>
       <div className="row between"><span className="num muted">{pos.lat != null ? `${pos.lat}, ${pos.lng}` : 'Not set'}</span>

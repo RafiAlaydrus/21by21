@@ -35,12 +35,7 @@ export async function saveFile(blob: Blob, name: string, type: string): Promise<
   return 'downloaded';
 }
 
-export async function doBackup(): Promise<'shared' | 'downloaded'> {
-  const { blob, name } = await exportBackup();
-  const r = await saveFile(blob, name, 'application/zip');
-  await updateSettings((s) => { s.lastBackupAt = Date.now(); });
-  return r;
-}
+export const markBackedUp = () => updateSettings((s) => { s.lastBackupAt = Date.now(); });
 
 export interface BackupInfo { exportedAt: number; schemaVersion: number; photos: number; meals: number; workouts: number }
 

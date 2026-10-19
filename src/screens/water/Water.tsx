@@ -79,11 +79,11 @@ export default function Water() {
           <Cap>Quick add</Cap>
           <button type="button" className="link" style={{ fontSize: 13 }} onClick={() => nav('/settings?s=water')}>Edit in Settings</button>
         </div>
-        {settings.quickWater.length === 0 ? (
+        {settings.quickWater.filter((q) => q.ml > 0).length === 0 ? (
           <div className="empty"><div className="b600">No quick buttons yet</div><div className="t-13 muted">Add your glass and bottle sizes in Settings</div></div>
         ) : (
           <div className="grid3">
-            {settings.quickWater.map((q) => (
+            {settings.quickWater.filter((q) => q.ml > 0).map((q) => (
               <Btn key={q.id} tint={C.blue} tintA={0.28} onClick={() => void add(q.ml)} style={{ flexDirection: 'column', gap: 0, borderRadius: 16, padding: '8px 4px' }}>
                 <span className="t-13 b600 clip" style={{ maxWidth: '100%' }}>{q.label}</span><span className="num t-12 light">{fmtInt(q.ml)} ml</span>
               </Btn>

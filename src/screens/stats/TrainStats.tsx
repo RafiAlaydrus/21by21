@@ -38,7 +38,7 @@ export function TrainStats({ an }: { an: Analysis }) {
     <>
       <StatCard title="Training" right={`${fmtInt(total)} kg total`}>
         <div className="cap">Sessions per week</div>
-        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.max(1, weeks.length)}, minmax(0, 1fr))`, gap: 10, alignItems: 'end', height: 120 }}>
+        <div role="img" aria-label={`Sessions per week: ${weeks.map((w) => w.sessions).join(', ')}`} style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.max(1, weeks.length)}, minmax(0, 1fr))`, gap: 10, alignItems: 'end', height: 120 }}>
           {weeks.map((w) => (
             <div key={w.index} className="stack col-center g6"><span className="num t-13 b600">{w.sessions}</span><span style={{ width: '100%', height: Math.max(4, (w.sessions / maxW) * 70), borderRadius: 8, background: C.red }} /><span className="t-11 muted">Wk {w.index}{w.days < 7 ? ` (${w.days} d)` : ''}</span></div>
           ))}

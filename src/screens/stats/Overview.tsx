@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Btn, Card, Chip, Switch } from '../../components/ui';
 import { Sheet } from '../../components/Sheet';
+import { Icon } from '../../components/Icon';
 import { LineChart } from '../../charts/LineChart';
 import { Scatter } from '../../charts/Scatter';
 import { CellGrid, greenCell } from '../../charts/bits';
@@ -96,7 +97,7 @@ export function Overview({ an }: { an: Analysis }) {
         <div className="num t-13 muted">{bestWeek ? `Best week: ${fmtDay(bestWeek.s, 'd MMM')}–${fmtDay(bestWeek.e, 'd MMM')} (avg ${Math.round(bestWeek.avg)})` : ''}{lowDay ? ` · lowest day: Day ${idx(lowDay)} (${Math.round(sc(lowDay))})` : ''}</div>
       </StatCard>
 
-      <StatCard title="Compare" right={<Btn sm onClick={() => setPick(true)}>{mx.label} × {my.label} ▾</Btn>}>
+      <StatCard title="Compare" right={<Btn sm onClick={() => setPick(true)}>{mx.label} × {my.label}<Icon name="down" size={14} sw={2.4} /></Btn>}>
         {pairs.length < 3 ? <div className="muted t-13">Needs at least 3 days with both values logged{next ? ' (Y taken from the next day)' : ''}. Found {pairs.length}.</div> : (
           <Scatter points={pairs.map((p) => ({ x: p.x, y: p.y, key: p.key, tip: `${fmtDay(p.key, 'EEE d MMM')} · ${fmt1(p.x)} ${mx.unit} → ${fmt1(p.y)} ${my.unit}` }))} color={C.purple}
             xLabel={`${mx.label}${mx.unit ? ` (${mx.unit})` : ''}`} yLabel={`${my.label}${next ? ' next day' : ''}`} aria={`Scatter of ${mx.label} against ${my.label}`} onOpenDay={(k) => nav(`/day/${k}`)} line />
