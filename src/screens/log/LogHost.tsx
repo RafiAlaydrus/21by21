@@ -15,6 +15,17 @@ const REG: Partial<Record<LogKind, Lazy>> = {
   supplement: lazy(() => import('./SupplementLogger')),
   startSession: lazy(() => import('../train/StartSession')),
   cardio: lazy(() => import('../train/CardioLogger')),
+  craving: lazy(() => import('./MiscLoggers').then((m) => ({ default: m.CravingLogger }))),
+  checkin: lazy(() => import('./MiscLoggers').then((m) => ({ default: m.CheckinLogger }))),
+  weighin: lazy(() => import('./MiscLoggers').then((m) => ({ default: m.WeighInLogger }))),
+  steps: lazy(() => import('./MiscLoggers').then((m) => ({ default: m.StepsLogger }))),
+  tag: lazy(() => import('./MiscLoggers').then((m) => ({ default: m.TagLogger }))),
+  note: lazy(() => import('./MiscLoggers').then((m) => ({ default: m.NoteLogger }))),
+  reminder: lazy(() => import('./MiscLoggers').then((m) => ({ default: m.ReminderLogger }))),
+  custom: lazy(() => import('./MiscLoggers').then((m) => ({ default: m.CustomLogger }))),
+  measurements: lazy(() => import('./MeasurementsLogger')),
+  soreness: lazy(() => import('./SorenessLogger')),
+  photo: lazy(() => import('./PhotoLogger')),
 };
 
 interface Tile { id: string; label: string; icon: string; color: string; show: boolean; go: (() => void) | { kind: LogKind; props?: LogProps } }
