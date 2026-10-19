@@ -160,3 +160,9 @@ button.rowline { width: 100%; text-align: left; }
 .leaflet-control-attribution { font-size: 10px; }
 
 .overlay { position: absolute; inset: 0; z-index: 90; background: #000; display: flex; flex-direction: column; }
+
+/* ---------- pull to refresh ---------- */
+.ptr { position: absolute; top: 14px; left: 0; right: 0; z-index: 21; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-3); opacity: 0; pointer-events: none; }
+.ptr-spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.25); border-top-color: var(--text); }
+.ptr-spin.spin { animation: ptrSpin 700ms linear infinite; }
+@keyframes ptrSpin { to { transform: rotate(360deg); } }

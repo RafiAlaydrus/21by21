@@ -253,6 +253,7 @@ export default function Settings() {
 
       {sec('about', 'About', <>
         <button type="button" className="row between" style={{ minHeight: 44 }} onClick={() => setTaps(taps + 1)}><span>Version</span><span className="num muted">{APP_VERSION}</span></button>
+        <div className="row between t-13"><span className="muted">Build</span><span className="num muted">{__BUILD_ID__}</span></div>
         <div className="t-13 muted">A personal tracker. It records what you log and compares it with the targets you set. It never gives advice.</div>
         {dev && (
           <div className="stack g8 glass inner">

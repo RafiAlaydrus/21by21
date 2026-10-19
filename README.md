@@ -33,8 +33,15 @@ Indonesia (UTC+7) never moves an entry to another day.
 3. Launch **21 by 21** from the Home Screen. The first-run screen asks you to confirm the dates and (optionally) set
    targets, then requests persistent storage.
 
-After the first load everything works offline except barcode lookup (Open Food Facts) and map tiles. Updates download
-in the background and apply the next time you open the app (close it from the app switcher and open it again).
+After the first load everything works offline except barcode lookup (Open Food Facts) and map tiles.
+
+### Updating
+
+**Pull down** from the top of **Today, Train, Eat or Stats**. The app asks the server whether a newer version exists:
+if there is one it installs it and reloads straight into it; if not it says “Up to date” and stays where it is.
+(Pull-to-refresh is deliberately off on forms, sessions and settings so it can never discard something half-filled.)
+Settings → About → **Build** shows the build date and commit the phone is running, so you can confirm an update landed.
+Updates also download in the background and apply the next time the app is reopened.
 
 ## Back up and restore
 
@@ -95,6 +102,10 @@ Settings → About → tap **Version** five times:
   up behind the clock while keeping the status-bar-reduced height, leaving a black strip at the bottom. Without it
   the page runs from below the status bar to the bottom edge. Safe-area insets are then 0, so paddings are fixed.
 - The status bar is `black-translucent`; content fades to black at the top edge instead of being cut off.
+- Zoom is blocked (viewport `maximum-scale=1, user-scalable=no`, `touch-action: manipulation`, and handlers that cancel the
+  pinch gesture events) and long-press select/copy/paste callouts are blocked on all content (`user-select: none`,
+  `-webkit-touch-callout: none`). Text fields stay fully editable. This is a deliberate accessibility trade-off for a
+  single-user app; remove `src/lib/lockdown.ts` and the rules marked “feels native” in `src/styles/base.css` to undo it.
 - Overlays (sheets, toasts, camera) render into `#portal`, which is sized like `#root`.
 
 ## Stack and layout
@@ -108,8 +119,8 @@ src/db/          Dexie schema, types, defaults, backup/import, demo seed, refere
 src/logic/       pure, unit-tested functions (dates, nutrition, score, todo, prs, stats, search, timeline, report)
 src/charts/      SVG charts (line, bar, scatter, cell grids)
 src/components/  glass UI kit, sheets, toasts, tab bar, share cards, body map
-src/hooks/       data context (one live query), analysis, logger host, clock
-src/lib/         portal target, image export helpers
+src/hooks/       data context (one live query), analysis, logger host, clock, pull-to-refresh
+src/lib/         portal target, image export, update check (pull-to-refresh), zoom/selection lockdown
 src/screens/     today · train · eat · stats · log · settings · sleep · recap · day · search · water · onboarding
 public/fooddb/   bundled reference foods (approximate values; every number can be overridden)
 scripts/         icon and reference-food generators, bundle-size report

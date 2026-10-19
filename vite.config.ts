@@ -2,9 +2,15 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { execSync } from 'node:child_process';
+
+// shown in Settings → About so you can tell which build the phone is running
+const sha = process.env.GITHUB_SHA?.slice(0, 7) ?? (() => { try { return execSync('git rev-parse --short HEAD').toString().trim(); } catch { return 'local'; } })();
+const BUILD_ID = `${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC · ${sha}`;
 
 export default defineConfig({
   base: './',
+  define: { __BUILD_ID__: JSON.stringify(BUILD_ID) },
   plugins: [
     react(),
     VitePWA({

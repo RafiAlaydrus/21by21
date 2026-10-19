@@ -16,6 +16,11 @@ html { background: #000; }
 #portal > .backdrop, #portal > .sheet, #portal > .overlay { pointer-events: auto; }
 h1, h2, h3, p { margin: 0; }
 a { color: var(--blue); text-decoration: none; }
+/* feels native: no double-tap zoom, no long-press select/copy/paste callouts on content (fields stay editable) */
+html { touch-action: manipulation; }
+* { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+input, textarea, select, [contenteditable="true"] { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
+img, a { -webkit-user-drag: none; }
 button, input, textarea, select { font: inherit; color: inherit; }
 button { cursor: pointer; border: 0; background: none; padding: 0; }
 button:disabled { cursor: default; }

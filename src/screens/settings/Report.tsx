@@ -31,7 +31,7 @@ export default function Report() {
         <Btn tint={C.green} tintA={0.4} onClick={async () => { try { await navigator.clipboard.writeText(text); toast('Copied'); } catch { toast('Copy is not available here'); } }}>Copy</Btn>
         <Btn onClick={async () => { try { if (navigator.share) await navigator.share({ title: '21 by 21 report', text }); else { await navigator.clipboard.writeText(text); toast('Copied'); } } catch { /* cancelled */ } }}>Share</Btn>
       </div>
-      <Card><pre className="num t-13" style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', lineHeight: 1.5, userSelect: 'text' }}>{text}</pre></Card>
+      <Card><pre className="num t-13" style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', lineHeight: 1.5}}>{text}</pre></Card>
     </Page>
   );
 }
