@@ -5,6 +5,7 @@ import { Btn, Cap, Chip, DateField, NumField, Page, Segmented, TextField, Toggle
 import { Icon } from '../../components/Icon';
 import { Sheet } from '../../components/Sheet';
 import { TargetRow } from '../../components/TargetRow';
+import { ViewportInfo } from '../../components/ViewportInfo';
 import { useToast } from '../../components/Toast';
 import { useData } from '../../hooks/useData';
 import { todayKey, uid, updateSettings } from '../../db/ops';
@@ -256,6 +257,7 @@ export default function Settings() {
         {dev && (
           <div className="stack g8 glass inner">
             <Cap>Developer</Cap>
+            <ViewportInfo />
             <Btn disabled={!!working} onClick={() => setConfirmDemo(true)}>{working || 'Load demo data'}</Btn>
             <Btn className="danger" onClick={() => { setTyped(''); setWipe(true); }}>Wipe all data</Btn>
           </div>
