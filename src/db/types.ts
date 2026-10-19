@@ -57,7 +57,7 @@ export interface BlobRec extends Rec { kind: 'meal' | 'progress' | 'other'; full
 
 export interface Food extends Rec {
   name: string; brand?: string; basis: 'g' | 'ml'; per100: Nutrients; defaultState?: 'raw' | 'cooked';
-  note?: string; source: FoodSource; barcode?: string; useCount: number; lastUsedAt: number;
+  note?: string; source: FoodSource; barcode?: string; refId?: string; useCount: number; lastUsedAt: number;
 }
 
 export interface MealItem {
@@ -73,7 +73,7 @@ export interface Meal extends Rec, Daily, Timed {
 
 export interface Recipe extends Rec {
   name: string; mode: 'bought' | 'cooked'; items: MealItem[]; method?: string; tool?: string; cookTimeMin?: number;
-  place?: string; wholeDishG?: number;
+  place?: string; wholeDishG?: number; price?: Money; cost?: Money;
 }
 
 export interface DrinkType extends Rec { name: string; per100ml?: Macros4 }

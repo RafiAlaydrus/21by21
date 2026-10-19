@@ -14,13 +14,14 @@ export function Card({ lg, tile, flat, as = 'section', className = '', children,
 
 export interface GlowSpec { color: string; top: number; left?: number; right?: number; size?: number; opacity?: number; blur?: number }
 export function Glows({ list }: { list: GlowSpec[] }) {
+  // own clipped layer so the oversized glows can never widen (or let focus-scroll pan) the screen
   return (
-    <>
+    <div className="glows" aria-hidden="true">
       {list.map((g, i) => (
-        <div key={i} className="glow" aria-hidden="true"
+        <div key={i} className="glow"
           style={{ top: g.top, left: g.left, right: g.right, width: g.size ?? 300, height: g.size ?? 300, background: g.color, opacity: g.opacity ?? 0.2, filter: `blur(${g.blur ?? 100}px)` }} />
       ))}
-    </>
+    </div>
   );
 }
 

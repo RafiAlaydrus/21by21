@@ -1,9 +1,9 @@
 /* ---------- layout ---------- */
 .app-main { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; position: relative; }
-.screen { position: relative; min-height: 100%; padding: calc(var(--safe-t) + 20px) 16px calc(var(--safe-b) + 150px); display: flex; flex-direction: column; gap: 16px; overflow: hidden; }
+.screen { position: relative; min-height: 100%; padding: calc(var(--safe-t) + 20px) 16px calc(var(--safe-b) + 150px); display: flex; flex-direction: column; gap: 16px; overflow-x: clip; }
 .screen.no-tabs { padding-bottom: calc(var(--safe-b) + 40px); }
 .screen > * { position: relative; z-index: 1; flex-shrink: 0; }
-.screen > .glow { position: absolute; z-index: 0; }
+.screen > .glows { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
 .glow { position: absolute; border-radius: 50%; pointer-events: none; }
 .fade-in { animation: fadeRise 120ms ease-out both; }
 @keyframes fadeRise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
@@ -52,6 +52,7 @@
 .card.lg { border-radius: 28px; padding: 20px; }
 .card.tile { border-radius: 22px; padding: 14px; gap: 6px; }
 .card.flat { gap: 0; }
+.card.row { flex-direction: row; align-items: center; }
 .inner { border-radius: 18px; padding: 12px; }
 .sep { height: 1px; background: rgba(255, 255, 255, 0.08); flex-shrink: 0; }
 .rowline { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); min-height: 44px; }
