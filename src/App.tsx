@@ -1,9 +1,12 @@
-import { Suspense, useEffect, useRef } from 'react';
+import { Suspense, lazy, useEffect, useRef } from 'react';
 import { HashRouter, useLocation } from 'react-router-dom';
 import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 import { ToastProvider } from './components/Toast';
 import { TabBar } from './components/TabBar';
 import { AppRoutes } from './routes';
+import { DataProvider, useData } from './hooks/useData';
+
+const Onboarding = lazy(() => import('./screens/onboarding/Onboarding'));
 
 function Shell() {
   const ref = useRef<HTMLElement>(null);
@@ -19,13 +22,21 @@ function Shell() {
   );
 }
 
+function Gate() {
+  const { onboarded } = useData();
+  if (!onboarded) return <main className="app-main"><Suspense fallback={null}><Onboarding /></Suspense></main>;
+  return <Shell />;
+}
+
 export function App() {
   return (
     <HashRouter>
       <MotionConfig reducedMotion="user">
         <LazyMotion features={domAnimation} strict>
           <ToastProvider>
-            <Shell />
+            <DataProvider fallback={<div className="load-screen" />}>
+              <Gate />
+            </DataProvider>
           </ToastProvider>
         </LazyMotion>
       </MotionConfig>

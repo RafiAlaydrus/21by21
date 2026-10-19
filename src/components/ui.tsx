@@ -204,3 +204,12 @@ export function PhotoBox({ url, ratio = '4 / 3', radius = 18, label, style }: { 
     </div>
   );
 }
+
+export function DateField({ label, value, onChange, className = '' }: { label: string; value: string; onChange: (v: string) => void; className?: string }) {
+  return (
+    <label className={`glass-btn field ${className}`}>
+      <span className="lbl">{label}</span>
+      <input type="date" value={value} onChange={(e) => e.target.value && onChange(e.target.value)} className="num" />
+    </label>
+  );
+}
