@@ -1,6 +1,6 @@
 /* ---------- layout ---------- */
 .app-main { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; position: relative; }
-.screen { position: relative; min-height: 100%; padding: calc(var(--safe-t) + 20px) 16px calc(var(--safe-b) + 150px); display: flex; flex-direction: column; gap: 16px; overflow-x: clip; }
+.screen { position: relative; min-height: 100%; padding: calc(var(--safe-t) + 24px) 16px calc(var(--safe-b) + 150px); display: flex; flex-direction: column; gap: 16px; overflow-x: clip; }
 .screen.no-tabs { padding-bottom: calc(var(--safe-b) + 40px); }
 .screen > * { position: relative; z-index: 1; flex-shrink: 0; }
 .screen > .glows { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 160px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 160px), transparent); }
