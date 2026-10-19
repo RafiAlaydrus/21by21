@@ -16,6 +16,7 @@ const Exercises = lazy(() => import('./screens/train/Exercises'));
 const ExerciseDetail = lazy(() => import('./screens/train/ExerciseDetail'));
 const Gyms = lazy(() => import('./screens/train/Gyms'));
 const GymMap = lazy(() => import('./screens/train/GymMap'));
+const Stats = lazy(() => import('./screens/stats/Stats'));
 const DayView = lazy(() => import('./screens/day/DayView'));
 const Search = lazy(() => import('./screens/search/Search'));
 
@@ -23,6 +24,7 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Today />} />
+      <Route path="/stats" element={<Stats />} />
       <Route path="/day/:dayKey" element={<DayView />} />
       <Route path="/search" element={<Search />} />
       <Route path="/water" element={<Water />} />

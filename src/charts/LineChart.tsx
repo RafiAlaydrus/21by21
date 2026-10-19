@@ -24,14 +24,14 @@ export function LineChart({ series, w = 326, h = 140, xDomain, yDomain, yTicks, 
   return (
     <div className="chart-wrap">
       <svg viewBox={`0 0 ${w} ${h}`} role="img" aria-label={aria}>
-        {(yTicks ?? []).map((t) => (
+        {[...new Set(yTicks ?? [])].map((t) => (
           <g key={t}>
             <line x1={L} x2={w - R} y1={sy(t)} y2={sy(t)} stroke="rgba(255,255,255,0.07)" />
             {yLabels && <text x={0} y={sy(t) + 3.5} fill="#8E8E93" fontSize="10" fontFamily={FONT}>{fmtTick ? fmtTick(t) : t}</text>}
           </g>
         ))}
         {target != null && <line x1={L} x2={w - R} y1={sy(target)} y2={sy(target)} stroke={targetColor} strokeDasharray="3 4" />}
-        {series.map((s, si) => segments(s).map((seg, k) => seg.length > 1 && (
+        {series.map((s, si) => !s.points.every((p) => p.hollow) && segments(s).map((seg, k) => seg.length > 1 && (
           <polyline key={`${si}-${k}`} points={seg.map((p) => `${sx(p.x)},${sy(p.y!)}`).join(' ')} fill="none" stroke={s.color} strokeWidth={s.strokeW ?? 2.5} strokeLinejoin="round" strokeLinecap="round" strokeDasharray={s.dashed ? '4 5' : undefined} />
         )))}
         {series.map((s, si) => s.points.map((p, pi) => {
