@@ -88,7 +88,7 @@ export function FoodStats({ an }: { an: Analysis }) {
         {mealPts.length < 2 ? <div className="muted t-13">Needs more meals</div> : <Scatter points={mealPts} color={C.orange} xLabel="Challenge day" yLabel="Hour" aria="Time of day of each meal" onOpenDay={(k) => nav(`/day/${k}`)} />}
       </StatCard>
 
-      <StatCard title="Spend" right="per currency, not converted">
+      {d.settings.trackers.spending && <StatCard title="Spend" right="per currency, not converted">
         {Object.keys(spend).length === 0 && <div className="muted t-13">No prices or ingredient costs logged</div>}
         {Object.entries(spend).map(([cur, s]) => (
           <div key={cur} className="stack g6">
@@ -98,7 +98,7 @@ export function FoodStats({ an }: { an: Analysis }) {
           </div>
         ))}
         {Object.keys(spend).length > 0 && <Legend items={[['Cooked', C.green], ['Bought', C.orange]]} />}
-      </StatCard>
+      </StatCard>}
 
       <StatCard title="Cravings by time of day" right={`${resisted} resisted · ${craves.length - resisted} ate`}>
         {craves.length === 0 ? <div className="muted t-13">No cravings logged</div> : (

@@ -102,10 +102,10 @@ export default function Water() {
         </div>
       </Card>
 
-      <button type="button" className="glass-btn row between" style={{ borderRadius: 18, padding: '14px 16px', minHeight: 52, textAlign: 'left' }} onClick={() => open('drink', { dayKey: day })}>
+      {settings.trackers.drinks && <button type="button" className="glass-btn row between" style={{ borderRadius: 18, padding: '14px 16px', minHeight: 52, textAlign: 'left' }} onClick={() => open('drink', { dayKey: day })}>
         <span className="stack g2"><span className="b600">Log another drink</span><span className="t-12 muted">Coffee, tea, whey… not counted in water</span></span>
         <span className="t-17 muted">›</span>
-      </button>
+      </button>}
 
       <Card aria-label="Water by hour">
         <div className="row between baseline"><Cap>By hour</Cap>{avgGap != null && <span className="num t-12 muted">avg gap {fmtDuration(avgGap)}</span>}</div>

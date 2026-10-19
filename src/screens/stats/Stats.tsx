@@ -31,7 +31,7 @@ export default function Stats() {
         <div className="stack g2"><div className="eyebrow">{eyebrow}</div><h1 className="t-large">Stats</h1><div className="t-15 muted">{fmtDay(c.startDate, 'd MMM')} – {fmtDay(c.endDate, 'd MMM')}</div></div>
         <div className="row g8">
           {an.phase === 'complete' && <IconBtn icon="trophy" label="Recap" onClick={() => nav('/recap')} />}
-          <IconBtn icon="share" label="Export report" onClick={() => nav('/settings?s=report')} />
+          <IconBtn icon="share" label="Export report" onClick={() => nav('/report')} />
         </div>
       </header>
       <Segmented value={tab} options={TABS} onChange={(t) => setSp({ tab: t }, { replace: true })} />

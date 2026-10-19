@@ -93,7 +93,7 @@ export default function Today() {
     type Up = { key: string; sort: number; top: string; bottom: string; text: string; tag?: string; right?: string };
     const out: Up[] = [];
     const startToday = new Date(); startToday.setHours(0, 0, 0, 0);
-    for (const r of d.reminders) if (!r.done && r.at >= startToday.getTime()) {
+    if (settings.trackers.reminders) for (const r of d.reminders) if (!r.done && r.at >= startToday.getTime()) {
       const k = d.today === dayKeyOf(r.at, r.tzOffsetMin) ? 'today' : fmtDay(dayKeyOf(r.at, r.tzOffsetMin), 'EEE d');
       out.push({ key: r.id, sort: r.at, top: fmtTime(r.at, r.tzOffsetMin), bottom: k, text: r.text, tag: 'REMINDER' });
     }
@@ -105,7 +105,7 @@ export default function Today() {
     }
     if (c.recapDate > today) out.push({ key: 'recap', sort: Date.parse(c.recapDate), top: fmtDay(c.recapDate, 'EEE'), bottom: fmtDay(c.recapDate, 'd MMM'), text: 'Recap unlocks', right: `${diffDays(today, c.recapDate)} d` });
     return out.sort((x, y) => x.sort - y.sort).slice(0, 5);
-  }, [d.reminders, d.today, c, today]);
+  }, [d.reminders, d.today, c, today, settings.trackers.reminders]);
 
   /* ---------- consistency rings ---------- */
   const rings = useMemo(() => {
@@ -287,7 +287,7 @@ export default function Today() {
             </button>
           ))}
         </div>
-        <Btn style={{ alignSelf: 'flex-start' }} onClick={() => open('reminder')}>+ Add reminder</Btn>
+        {settings.trackers.reminders && <Btn style={{ alignSelf: 'flex-start' }} onClick={() => open('reminder')}>+ Add reminder</Btn>}
       </Card>
 
       <section aria-label="Today's progress" className="stack g10">
@@ -315,13 +315,13 @@ export default function Today() {
               {prCountForWorkout(an.prs, todayWorkouts[0].id) > 0 && <div className="t-13 b600" style={{ color: C.yellow }}>{prCountForWorkout(an.prs, todayWorkouts[0].id)} new PR{prCountForWorkout(an.prs, todayWorkouts[0].id) > 1 ? 's' : ''}</div>}
             </> : <><div className="t-card muted">—</div><div className="t-13 muted">No session today</div></>}
           </Card>
-          <Card tile><div className="t-12 b600" style={{ color: C.purple }}>SLEEP · LAST NIGHT</div>
+          {settings.trackers.sleep && <Card tile><div className="t-12 b600" style={{ color: C.purple }}>SLEEP · LAST NIGHT</div>
             {lastNight ? <>
               <div className="num t-card">{fmtDuration(lastNight.durationMin ?? 0)}</div>
               <div className="num t-13 muted">{fmtTime(lastNight.start, lastNight.tzOffsetMin)} → {fmtTime(lastNight.end!, lastNight.endTzOffsetMin ?? lastNight.tzOffsetMin)}</div>
             </> : <><div className="t-card muted">—</div><div className="t-13 muted">Not logged</div></>}
             <div className="t-13 muted">{naps.length ? `Nap ${fmtDuration(a.napMin)}` : 'No nap yet'}</div>
-          </Card>
+          </Card>}
         </div>
         {settings.trackers.supplements && (
           <Card tile className="row between" style={{ flexDirection: 'row' }}>

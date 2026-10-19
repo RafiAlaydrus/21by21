@@ -29,8 +29,8 @@ export function Scatter({ points, color, w = 326, h = 170, xLabel, yLabel, aria,
         <text x={(L + w - R) / 2} y={h - 2} fill="#8E8E93" fontSize="11" textAnchor="middle" fontFamily={FONT}>{xLabel}</text>
         <text x={8} y={(T + h - B) / 2} fill="#8E8E93" fontSize="11" textAnchor="middle" transform={`rotate(-90 8 ${(T + h - B) / 2})`} fontFamily={FONT}>{yLabel}</text>
         {reg && <line x1={reg[0]} y1={reg[1]} x2={reg[2]} y2={reg[3]} stroke={color} strokeOpacity={0.45} strokeDasharray="4 4" />}
-        {points.map((p, i) => <circle key={p.key} cx={sx(p.x)} cy={sy(p.y)} r={sel === i ? 7 : 5} fill={color} fillOpacity={0.85} stroke={sel === i ? '#fff' : 'none'} />)}
-        {points.map((p, i) => <circle key={`h${p.key}`} cx={sx(p.x)} cy={sy(p.y)} r={13} fill="transparent" style={{ cursor: 'pointer' }} onClick={() => tap(i)} />)}
+        {points.map((p, i) => <circle key={i} cx={sx(p.x)} cy={sy(p.y)} r={sel === i ? 7 : 5} fill={color} fillOpacity={0.85} stroke={sel === i ? '#fff' : 'none'} />)}
+        {points.map((p, i) => <circle key={`h${i}`} cx={sx(p.x)} cy={sy(p.y)} r={13} fill="transparent" style={{ cursor: 'pointer' }} onClick={() => tap(i)} />)}
       </svg>
       {sel != null && points[sel]?.tip && <Tip x={sx(points[sel].x)} y={sy(points[sel].y)} w={w} h={h}>{points[sel].tip}<div className="muted t-11">tap again to open day</div></Tip>}
     </div>

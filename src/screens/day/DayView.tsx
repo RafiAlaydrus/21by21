@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Btn, Card, Cap, IconBtn, Page, PhotoBox, Ring } from '../../components/ui';
 import { Icon } from '../../components/Icon';
@@ -9,6 +10,10 @@ import { useBlobUrl } from '../../db/photos';
 import { addDays, challengeDay, fmtTime } from '../../logic/dates';
 import { fmt1, fmtDayLong, fmtDuration, fmtInt, fmtMacro } from '../../logic/format';
 import { MealCard } from '../eat/MealCard';
+import { ExportImageSheet } from '../../components/ExportImageSheet';
+import { DayCard } from '../../components/ShareCards';
+import { useDataUrls } from '../../lib/exportImage';
+import { prCountForWorkout } from '../../logic/prs';
 import { SessionRow } from '../train/bits';
 import type { CatScore } from '../../logic/score';
 import type { DayAgg } from '../../logic/aggregate';
@@ -63,6 +68,11 @@ export default function DayView() {
   const photos = d.progressPhotos.filter((p) => p.dayKey === dayKey);
   const sore = d.soreness.find((s) => s.dayKey === dayKey);
   const s = score.score;
+  const [exporting, setExporting] = useState(false);
+  const mealPhotoIds = agg.meals.slice(0, 4).map((m) => m.photoId);
+  const urls = useDataUrls(exporting ? mealPhotoIds : [], 'thumb');
+  const prCount = agg.workouts.reduce((a, w) => a + prCountForWorkout(an.prs, w.id), 0);
+  const exNames = [...new Set(agg.workouts.flatMap((w) => w.sets.filter((x) => x.doneAt).map((x) => x.exerciseId)))].map((id) => d.exercises.find((e) => e.id === id)?.name ?? '');
   const prev = addDays(dayKey, -1), next = addDays(dayKey, 1);
   const inRange = (k: string) => k >= settings.challenge.baselineDate && k <= settings.challenge.recapDate && k <= d.today;
 
@@ -133,6 +143,10 @@ export default function DayView() {
         <Btn onClick={() => nav(`/water?day=${dayKey}`)}><Icon name="drop" size={18} />Water</Btn>
         <Btn onClick={() => nav(`/log/meal?day=${dayKey}`)}><Icon name="eat" size={18} />Add meal</Btn>
       </div>
+      <Btn onClick={() => setExporting(true)}><Icon name="share" size={18} />Export day card</Btn>
+      <ExportImageSheet open={exporting} onClose={() => setExporting(false)} title="Day card" width={1080} height={1350} fileName={`21by21-${dayKey}.png`} ready={urls != null}>
+        <DayCard day={dayKey} dayNo={no} len={an.cdays.length} score={s} agg={agg} prCount={prCount} photos={mealPhotoIds.map((id) => urls?.[id] ?? '')} mealLabels={agg.meals.slice(0, 4).map((m) => m.label)} exerciseNames={exNames} />
+      </ExportImageSheet>
     </Page>
   );
 }

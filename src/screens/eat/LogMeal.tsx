@@ -199,7 +199,7 @@ export default function LogMeal() {
       {bought ? (
         <section aria-label="Where" className="glass card">
           <TextField label="Where" value={place} onChange={setPlace} placeholder="Place" />
-          {money(price, setPrice, 'Price')}
+          {settings.trackers.spending && money(price, setPrice, 'Price')}
         </section>
       ) : (
         <section aria-label="Cooking" className="glass card">
@@ -311,7 +311,7 @@ export default function LogMeal() {
         <div className="toggle-row"><span>Clean meal</span><Switch checked={clean} onChange={setClean} label="Clean meal" /></div>
         <div className="toggle-row"><span>{bought ? 'Save as “usual”' : 'Save as recipe'}</span><Switch checked={saveRecipe} onChange={setSaveRecipe} label={bought ? 'Save as usual meal' : 'Save as recipe'} /></div>
         {saveRecipe && <TextField label="Name" value={recipeName} onChange={setRecipeName} placeholder={label} />}
-        {!bought && money(cost, setCost, 'Ingredient cost')}
+        {!bought && settings.trackers.spending && money(cost, setCost, 'Ingredient cost')}
       </section>
 
       <section aria-label="Note" className="glass card">

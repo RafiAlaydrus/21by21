@@ -54,7 +54,7 @@ export default function Eat() {
       </section>
 
       <section className="stack g10">
-        {link('drop', 'Water & drinks', `${fmtInt(a.nutrition.waterMl)} ml water${a.nutrition.otherMl ? ` · ${fmtInt(a.nutrition.otherMl)} ml other drinks` : ''}`, '/water', C.blue)}
+        {data.settings.trackers.water && link('drop', 'Water & drinks', `${fmtInt(a.nutrition.waterMl)} ml water${a.nutrition.otherMl ? ` · ${fmtInt(a.nutrition.otherMl)} ml other drinks` : ''}`, '/water', C.blue)}
         {link('grid', 'Food gallery', 'All meal photos by day', '/eat/gallery', C.orange)}
         {link('library', 'Library', 'Foods, recipes, drinks, supplements', '/eat/library', C.cyan)}
       </section>
