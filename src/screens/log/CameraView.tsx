@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Icon } from '../../components/Icon';
 import { PhotoPicker } from '../../components/PhotoPicker';
 import { canvasToJpeg } from '../../db/photos';
+import { portalEl } from '../../lib/portal';
 
 /**
  * getUserMedia camera with the previous photo of the same pose as a 35 % ghost overlay for alignment.
@@ -43,7 +44,7 @@ export default function CameraView({ ghostUrl, onCapture, onClose }: { ghostUrl?
   };
 
   return createPortal(
-    <div style={{ position: 'fixed', inset: 0, zIndex: 95, background: '#000', display: 'flex', flexDirection: 'column' }}>
+    <div className="overlay" style={{ zIndex: 95 }}>
       <div className="row between" style={{ padding: 'calc(var(--safe-t) + 10px) 16px 10px' }}>
         <h2 className="t-17 b600">Progress photo</h2>
         <button type="button" className="glass-btn icon-btn" aria-label="Close camera" onClick={onClose}><Icon name="x" size={20} /></button>
@@ -67,6 +68,6 @@ export default function CameraView({ ghostUrl, onCapture, onClose }: { ghostUrl?
         </div>
       )}
     </div>,
-    document.body,
+    portalEl(),
   );
 }

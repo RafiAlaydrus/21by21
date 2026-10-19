@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Btn, NumField } from '../../components/ui';
 import { Icon } from '../../components/Icon';
+import { portalEl } from '../../lib/portal';
 
 /** Full-screen scanner. @zxing/browser is imported lazily so it never touches the initial bundle. */
 export default function BarcodeScanner({ onCode, onClose }: { onCode: (code: string) => void; onClose: () => void }) {
@@ -30,7 +31,7 @@ export default function BarcodeScanner({ onCode, onClose }: { onCode: (code: str
   }, [onCode]);
 
   return createPortal(
-    <div style={{ position: 'fixed', inset: 0, zIndex: 90, background: '#000', display: 'flex', flexDirection: 'column' }}>
+    <div className="overlay">
       <div className="row between" style={{ padding: 'calc(var(--safe-t) + 12px) 16px 12px' }}>
         <h2 className="t-17 b600">Scan barcode</h2>
         <button type="button" className="glass-btn icon-btn" aria-label="Close scanner" onClick={onClose}><Icon name="x" size={20} /></button>
@@ -47,6 +48,6 @@ export default function BarcodeScanner({ onCode, onClose }: { onCode: (code: str
         </div>
       </div>
     </div>,
-    document.body,
+    portalEl(),
   );
 }

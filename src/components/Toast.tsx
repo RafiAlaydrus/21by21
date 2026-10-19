@@ -1,6 +1,8 @@
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, m } from 'motion/react';
+import { portalEl } from '../lib/portal';
 
 interface ToastOpts { undo?: () => void; ms?: number }
 interface Item { id: number; msg: string; undo?: () => void }
@@ -21,7 +23,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <Ctx.Provider value={toast}>
       {children}
-      <div className="toast-wrap" aria-live="polite">
+      {createPortal(<div className="toast-wrap" aria-live="polite">
         <AnimatePresence>
           {items.map((t) => (
             <m.div key={t.id} className="glass toast" initial={{ opacity: 0, y: 12, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8 }} transition={{ type: 'spring', stiffness: 500, damping: 38 }}>
@@ -30,7 +32,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             </m.div>
           ))}
         </AnimatePresence>
-      </div>
+      </div>, portalEl())}
     </Ctx.Provider>
   );
 }

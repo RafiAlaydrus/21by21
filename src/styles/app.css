@@ -115,21 +115,21 @@ button.rowline { width: 100%; text-align: left; }
 @keyframes ringIn { from { stroke-dashoffset: var(--len); } }
 
 /* ---------- tab bar ---------- */
-.tabbar { position: fixed; left: 16px; right: 16px; bottom: max(28px, calc(var(--safe-b) - 6px)); z-index: 30; height: 68px; border-radius: 34px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; padding: 0 6px; }
+.tabbar { position: absolute; left: 16px; right: 16px; bottom: max(28px, calc(var(--safe-b) - 6px)); z-index: 30; height: 68px; border-radius: 34px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; padding: 0 6px; }
 .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 11px; font-weight: 600; color: var(--text-3); min-height: 44px; }
 .tab.active { color: var(--green); }
 .fab { position: absolute; left: 50%; top: -26px; margin-left: -34px; width: 68px; height: 68px; border-radius: 34px; display: flex; align-items: center; justify-content: center; padding: 0; background: rgba(48, 209, 88, 0.55); box-shadow: 0 0 0 7px #000, inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 10px 24px rgba(48, 209, 88, 0.35); z-index: 4; color: #fff; }
 .fab:active { transform: scale(0.94); }
 
 /* ---------- sheet / toast ---------- */
-.backdrop { position: fixed; inset: 0; z-index: 50; background: rgba(0, 0, 0, 0.55); }
-.sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 51; max-height: 92%; display: flex; flex-direction: column; border-radius: 28px 28px 0 0; background: rgba(32, 32, 36, 0.78); -webkit-backdrop-filter: blur(40px) saturate(180%); backdrop-filter: blur(40px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.14); border-bottom: 0; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 -10px 40px rgba(0, 0, 0, 0.5); }
+.backdrop { position: absolute; inset: 0; z-index: 50; background: rgba(0, 0, 0, 0.55); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 51; max-height: 92%; display: flex; flex-direction: column; border-radius: 28px 28px 0 0; background: rgba(32, 32, 36, 0.78); -webkit-backdrop-filter: blur(40px) saturate(180%); backdrop-filter: blur(40px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.14); border-bottom: 0; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 -10px 40px rgba(0, 0, 0, 0.5); }
 .sheet.tall { height: 92%; }
 .sheet-grab { width: 38px; height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.25); margin: 8px auto 4px; flex-shrink: 0; }
 .sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 6px 16px 8px; gap: 8px; flex-shrink: 0; }
 .sheet-head h2 { font-size: 17px; font-weight: 600; text-align: center; flex: 1; }
 .sheet-body { overflow-y: auto; padding: 4px 16px calc(var(--safe-b) + 24px); display: flex; flex-direction: column; gap: 12px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
-.toast-wrap { position: fixed; left: 16px; right: 16px; bottom: calc(max(28px, calc(var(--safe-b) - 6px)) + 90px); z-index: 80; display: flex; flex-direction: column; gap: 8px; pointer-events: none; align-items: center; }
+.toast-wrap { position: absolute; left: 16px; right: 16px; bottom: calc(max(28px, calc(var(--safe-b) - 6px)) + 90px); z-index: 80; display: flex; flex-direction: column; gap: 8px; pointer-events: none; align-items: center; }
 .toast { pointer-events: auto; border-radius: 18px; padding: 10px 10px 10px 16px; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 500; max-width: 100%; background: rgba(44, 44, 48, 0.85); }
 .toast button { color: var(--cyan); font-weight: 700; padding: 8px 10px; min-height: 36px; }
 .quick-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -154,7 +154,9 @@ button.rowline { width: 100%; text-align: left; }
 .edited-late { font-size: 10px; color: var(--text-2); border: 1px solid var(--hairline); border-radius: 4px; padding: 0 4px; margin-left: 6px; }
 .wake-btn { width: 240px; height: 240px; border-radius: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 0; background: rgba(191, 90, 242, 0.22); }
 .leaflet-container { background: #111; border-radius: 18px; font-family: var(--font); }
-.load-screen { position: fixed; inset: 0; background: #000; }
+.load-screen { position: absolute; inset: 0; background: #000; }
 
 .leaflet-tile-pane { filter: invert(0.92) hue-rotate(180deg) saturate(0.7); }
 .leaflet-control-attribution { font-size: 10px; }
+
+.overlay { position: absolute; inset: 0; z-index: 90; background: #000; display: flex; flex-direction: column; }

@@ -49,7 +49,7 @@ export default function WakeUp() {
   };
 
   return (
-    <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', background: '#000' }}>
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', background: '#000' }}>
       <div aria-hidden="true" className="glow" style={{ left: '50%', top: '42%', width: 380, height: 380, marginLeft: -190, background: C.purple, opacity: 0.3, filter: 'blur(110px)' }} />
       {STARS.map(([x, y, s, o], i) => <div key={i} aria-hidden="true" style={{ position: 'absolute', left: x, top: y, width: s, height: s, borderRadius: 1, background: '#fff', opacity: o }} />)}
       <div style={{ position: 'relative', zIndex: 1, height: '100%', padding: 'calc(var(--safe-t) + 80px) 24px calc(var(--safe-b) + 40px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>

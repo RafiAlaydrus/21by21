@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, m } from 'motion/react';
+import { portalEl } from '../lib/portal';
 
 export function Sheet({ open, onClose, title, children, tall, action, closeLabel = 'Cancel' }: {
   open: boolean; onClose: () => void; title?: string; children: ReactNode; tall?: boolean;
@@ -36,6 +37,6 @@ export function Sheet({ open, onClose, title, children, tall, action, closeLabel
         </m.div>
       )}
     </AnimatePresence>,
-    document.body,
+    portalEl(),
   );
 }
