@@ -27,7 +27,7 @@ export default function Onboarding() {
 
   return (
     <div className="screen no-tabs" style={{ minHeight: '100%' }}>
-      <Glows list={[{ color: '#30D158', top: -60, left: -90, size: 320, opacity: 0.22, blur: 90 }, { color: '#0A84FF', top: 520, right: -120, size: 300, opacity: 0.18 }]} />
+      <Glows list={[{ color: '#30D158', top: -60, left: -90, size: 320, opacity: 0.22 }, { color: '#0A84FF', top: 520, right: -120, size: 300, opacity: 0.18 }]} />
       <header className="stack g4">
         <div className="eyebrow">Setup · {step + 1} of 3</div>
         <h1 className="t-large">{['Challenge dates', 'Your targets', 'Install on iPhone'][step]}</h1>

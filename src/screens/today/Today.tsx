@@ -26,7 +26,7 @@ import { CellGrid, greenCell } from '../../charts/bits';
 import { C } from '../../theme';
 
 const GLOWS = [
-  { color: C.green, top: -60, left: -90, size: 320, opacity: 0.22, blur: 90 },
+  { color: C.green, top: -60, left: -90, size: 320, opacity: 0.22 },
   { color: C.blue, top: 560, right: -120, size: 300, opacity: 0.2 },
   { color: C.purple, top: 1280, left: -100, size: 280, opacity: 0.16 },
 ];

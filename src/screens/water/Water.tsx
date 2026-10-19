@@ -58,7 +58,7 @@ export default function Water() {
 
   return (
     <Page title="Water" sub={day === today ? 'Plain water only' : `Plain water only · ${fmtDayWd(day)}`} noTabs
-      glows={[{ color: C.blue, top: 80, left: 15, size: 360, opacity: 0.26, blur: 110 }]}>
+      glows={[{ color: C.blue, top: 80, left: 15, size: 360, opacity: 0.26 }]}>
       <section aria-label="Water today" className="row g12" style={{ gap: 22, padding: '8px 4px' }}>
         <div style={{ position: 'relative', width: 120, height: 190, borderRadius: '22px 22px 34px 34px', border: '1.5px solid rgba(255,255,255,0.22)', overflow: 'hidden', background: 'rgba(255,255,255,0.04)', flexShrink: 0 }} role="img" aria-label={target ? `${Math.round(fill * 100)} percent of target` : 'Water glass'}>
           <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: `${fill * 100}%`, background: C.blue, opacity: 0.85, transition: 'height 300ms ease-out' }} />

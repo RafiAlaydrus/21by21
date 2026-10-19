@@ -15,9 +15,9 @@ export default function Train() {
   const nav = useNavigate();
   const { open } = useLogger();
   const { workouts, gyms, exercises, settings, today } = useData();
-  const now = useNow(1000);
   const prs = computePRs(workouts);
   const active = [...workouts].filter((w) => !w.checkOut).sort((a, b) => b.checkIn - a.checkIn)[0];
+  const now = useNow(active ? 1000 : 60000); // the 1 s tick only drives the live session timer
   const todays = workouts.filter((w) => w.dayKey === today && w.checkOut);
   const ws = weekStart(today), we = addDays(ws, 6);
   const weekCount = workouts.filter((w) => w.dayKey >= ws && w.dayKey <= we && workoutHasWork(w)).length;
