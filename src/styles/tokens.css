@@ -1,0 +1,19 @@
+:root {
+  --bg: #000000;
+  --text: #F5F5F7;
+  --text-2: #8E8E93;
+  --text-3: #AEAEB2;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --green: #30D158;
+  --blue: #0A84FF;
+  --cyan: #64D2FF;
+  --orange: #FF9F0A;
+  --yellow: #FFD60A;
+  --red: #FF375F;
+  --purple: #BF5AF2;
+  --purple-light: #D99CFF;
+  --surface-solid: #1C1C1E;
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
